@@ -7,10 +7,24 @@ module.exports = function() {
 
     return function(req, res, next) {
         
-        console.log('Server IP:', req.connection.localAddress)
+        // Read PATHS_TO_IGNORE environment variable
+        var pathsToIgnore = process.env.ANONYMOUS_ACCESS_PATHS_TO_IGNORE
+            ? process.env.ANONYMOUS_ACCESS_PATHS_TO_IGNORE.split(',').map(function (path) { return path.trim() })
+            : []
         
-        // Bail out if the anonymous access blocker is not enabled.  Do not handle anything under /keystone
-        if (process.env.ANONYMOUS_ACCESS_BLOCKER_ENABLED !== 'true' || req.path.lastIndexOf('/keystone', 0) === 0) {
+        // Do not handle anything under /keystone
+        pathsToIgnore = pathsToIgnore.concat(['/keystone'])
+        
+        console.log('pathsToIgnore', pathsToIgnore)
+        
+        var isIgnoredPath = pathsToIgnore
+            .filter(function (path) { return req.path.lastIndexOf(path, 0) === 0 })
+            .length > 0
+        
+        console.log(req.path, isIgnoredPath)
+        
+        // Bail out if the anonymous access blocker is not enabled or the path should be ignored
+        if (process.env.ANONYMOUS_ACCESS_BLOCKER_ENABLED !== 'true' || isIgnoredPath) {
             return next();
         }
  
