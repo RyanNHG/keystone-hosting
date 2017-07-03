@@ -7,6 +7,8 @@ module.exports = function() {
 
     return function(req, res, next) {
         
+        console.log('Server IP:', req.connection.localAddress)
+        
         // Bail out if the anonymous access blocker is not enabled.  Do not handle anything under /keystone
         if (process.env.ANONYMOUS_ACCESS_BLOCKER_ENABLED !== 'true' || req.path.lastIndexOf('/keystone', 0) === 0) {
             return next();
