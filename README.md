@@ -10,25 +10,24 @@ $ npm install https://github.com/onenorth/keystone-hosting/tarball/master --save
 
 # API
 
-'trust proxy' is required when behind a proxy.  Set this to enable processing of the HTTP request X-Forwarded-For header.  
-
 ```js
 var keystone = require('keystone');
 var hosting = require('onenorth-keystone-hosting');
-...
-keystone.init({
-    ...
-    'trust proxy': true
-});
 ...
 hosting.register(keystone);
 keystone.start();
 ```
 # Configuration
 
+__Important__: `ONI_KEYSTONE_TRUST_PROXY` is required when behind a proxy. 
+
+Set this to enable processing of the HTTP request X-Forwarded-For header.
+
 The following environment variables need to be set
 
 ```txt
+ONI_KEYSTONE_TRUST_PROXY=true
+
 ANONYMOUS_ACCESS_BLOCKER_ENABLED=true
 ANONYMOUS_ACCESS_BLOCKER_ALLOWED_IP_RANGES=127.0.0.1/32 ::1
 
@@ -51,11 +50,6 @@ LOG41N_PATH={application path}
 ```js
 var keystone = require('keystone');
 var hosting = require('onenorth-keystone-hosting');
-...
-keystone.init({
-    ...
-    'trust proxy': true
-});
 ...
 hosting.register(keystone);
 keystone.start();
