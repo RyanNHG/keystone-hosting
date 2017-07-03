@@ -8,6 +8,7 @@ var Log1n = function() {
     var self = this;
 
     self.register = function(keystone){
+        keystone.set('trust proxy', keystone.get('trust proxy') || process.env.ONI_KEYSTONE_TRUST_PROXY === 'true')
         keystone.pre('routes', healthcheck(keystone));
         keystone.pre('routes', log41n(keystone));
         keystone.pre('routes', anonymousAccessBlocker());
