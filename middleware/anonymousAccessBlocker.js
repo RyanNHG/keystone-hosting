@@ -29,7 +29,7 @@ module.exports = function() {
         }
  
         // Process anonymous requests.
-        if (!req.user || !req.user.canAccessKeystone) {
+        if (!req.user) {
             
             // Check for IP range allowances.  Requests will be allowed through if the IP address is in range.
             var ipRanges = process.env.ANONYMOUS_ACCESS_BLOCKER_ALLOWED_IP_RANGES;
